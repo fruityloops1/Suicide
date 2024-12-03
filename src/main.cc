@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <cstdlib>
 
 #include <imgui.h>
@@ -14,7 +15,9 @@
 #include "types.h"
 #include "util.h"
 
-u32 __nx_nv_service_type = NvServiceType_Factory;
+extern "C" u32 __nx_nv_service_type = NvServiceType_Factory;
+extern "C" u32 __nx_nv_transfermem_size = 0x10000;
+extern "C" size_t __nx_heap_size = 0x200000;
 
 extern "C" void __appInit(void)
 {
@@ -77,8 +80,6 @@ extern "C" void __appInit(void)
     rc = spsmInitialize();
     if (R_FAILED(rc))
         diagAbortWithResult(MAKERESULT(Module_Libnx, LibnxError_ShouldNotHappen));
-
-    smExit();
 }
 
 extern "C" void __appExit(void)

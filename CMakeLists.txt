@@ -10,9 +10,11 @@ endif()
 
 set(TARGET ${PROJECT_NAME})
 set(IMGUI_DIR third_parties/imgui)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${TARGET}
   src/main.cc
+  src/LogServer.cpp
   src/imgui_impl_deko3d.cpp
   ${IMGUI_DIR}/imgui.cpp
   ${IMGUI_DIR}/imgui_demo.cpp
@@ -24,6 +26,7 @@ target_compile_features(${TARGET} PUBLIC cxx_std_17)
 target_compile_definitions(${TARGET} PUBLIC
   IMGUI_DISABLE_OBSOLETE_KEYIO
   IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+  IMGUI_USER_CONFIG="nxdb_imgui_config.h"
   )
 
 target_link_libraries(${TARGET} PUBLIC
@@ -31,7 +34,9 @@ target_link_libraries(${TARGET} PUBLIC
   )
 target_include_directories(${TARGET} PUBLIC
   ${DEVKITPRO}/portlibs/switch/include
-  ${IMGUI_DIR})
+  ${IMGUI_DIR}
+  src
+  )
 
 nx_add_shader_program(imgui_vsh src/imgui_vsh.glsl vert)
 nx_add_shader_program(imgui_fsh src/imgui_fsh.glsl frag)
@@ -44,7 +49,6 @@ nx_generate_nacp(${TARGET}.nacp
   NAME ${TARGET}
   AUTHOR ${PROJECT_AUTHOR}
   )
-nx_create_nro(${TARGET}
-  NACP ${TARGET}.nacp
-  ROMFS ${TARGET}_romfs
+nx_create_exefs(${TARGET}
+  CONFIG sysmodule.json
   )

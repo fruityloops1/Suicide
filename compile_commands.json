@@ -1,0 +1,44 @@
+[
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/src/main.o -c /home/nala/git/imgui_deko3d_example/src/main.cc",
+  "file": "/home/nala/git/imgui_deko3d_example/src/main.cc",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/src/main.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/src/imgui_impl_deko3d.o -c /home/nala/git/imgui_deko3d_example/src/imgui_impl_deko3d.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/src/imgui_impl_deko3d.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/src/imgui_impl_deko3d.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui.o -c /home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_demo.o -c /home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_demo.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_demo.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_demo.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_draw.o -c /home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_draw.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_draw.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_draw.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_tables.o -c /home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_tables.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_tables.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_tables.o"
+},
+{
+  "directory": "/home/nala/git/imgui_deko3d_example/build",
+  "command": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-g++ -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS -DIMGUI_DISABLE_OBSOLETE_KEYIO -I/opt/devkitpro/portlibs/switch/include -I/home/nala/git/imgui_deko3d_example/third_parties/imgui -isystem /opt/devkitpro/libnx/include -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -ftls-model=local-exec -ffunction-sections -fdata-sections -D__SWITCH__ -g -O2 -DNDEBUG -fPIE -o CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_widgets.o -c /home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_widgets.cpp",
+  "file": "/home/nala/git/imgui_deko3d_example/third_parties/imgui/imgui_widgets.cpp",
+  "output": "CMakeFiles/imgui_deko3d_example.dir/third_parties/imgui/imgui_widgets.o"
+}
+]

@@ -110,9 +110,11 @@ int main(int argc, char* argv[])
     ImGui::StyleColorsDark();
     // ImGuiIO &io = ImGui::GetIO(); // to configure imgui
 
+    nxdb::log("ImGui_ImplDeko3d_Init");
     ImGui_ImplDeko3d_Init();
 
-    while (appletMainLoop()) {
+    while (true) {
+        nxdb::log("frame");
         u64 down = ImGui_ImplDeko3d_UpdatePad();
         if (down & HidNpadButton_Plus) // "+" to exit
             break;
@@ -130,4 +132,11 @@ int main(int argc, char* argv[])
     ImGui_ImplDeko3d_Shutdown();
     ImGui::DestroyContext();
     return 0;
+}
+
+extern "C" void diagAbortWithResult(Result res)
+{
+    nxdb::log("diagAbortWithResult(%x)", res);
+    svcBreak(BreakReason_Panic, (uintptr_t)&res, sizeof(res));
+    __builtin_unreachable();
 }

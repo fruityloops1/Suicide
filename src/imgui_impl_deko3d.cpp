@@ -1,4 +1,5 @@
 #include "imgui_impl_deko3d.h"
+#include "LogServer.h"
 #include "types.h"
 
 #include <deko3d.hpp>
@@ -231,6 +232,7 @@ static void InitDeko3dFontTexture(ImGui_ImplDeko3d_Data* bd)
     DkDevice device = bd->device;
     dk::CmdBuf cmdbuf = bd->cmdbuf[0];
 
+    nxdb::log("descriptorsMemBlock");
     // initialize memblock for descriptors
     bd->descriptorsMemBlock = dk::MemBlockMaker(device,
         align(sizeof(Descriptors), DK_MEMBLOCK_ALIGNMENT))
@@ -239,17 +241,21 @@ static void InitDeko3dFontTexture(ImGui_ImplDeko3d_Data* bd)
     Descriptors* descCpuAddr = (Descriptors*)bd->descriptorsMemBlock.getCpuAddr();
     DkGpuAddr descGpuAddr = bd->descriptorsMemBlock.getGpuAddr();
 
+    nxdb::log("bindSamplerDescriptorSet");
     // bind all descriptors
     cmdbuf.bindSamplerDescriptorSet(descGpuAddr, 1);
     constexpr int offset = offsetof(Descriptors, image);
     cmdbuf.bindImageDescriptorSet(descGpuAddr + offset, 1);
 
+    nxdb::log("bindSamplerDescriptorSet");
     // generate font texture id
     ImGuiIO& io = ImGui::GetIO();
+    nxdb::log("ImGui_LoadSwitchFonts");
     ImGui_LoadSwitchFonts(io);
     bd->fontTextureHandle = dkMakeTextureHandle(0, 0);
     io.Fonts->SetTexID(&bd->fontTextureHandle);
 
+    nxdb::log("GetTexDataAsRGBA32");
     // copy font data to scratch buffer
     unsigned char* pixels;
     int width, height, channel;
@@ -260,6 +266,7 @@ static void InitDeko3dFontTexture(ImGui_ImplDeko3d_Data* bd)
                                              .create();
     memcpy(scratchMemBlock.getCpuAddr(), pixels, width * height * channel);
 
+    nxdb::log("fontImageMemBlock");
     // create font image memblock
     dk::ImageLayout layout;
     dk::ImageLayoutMaker { device }
@@ -273,9 +280,11 @@ static void InitDeko3dFontTexture(ImGui_ImplDeko3d_Data* bd)
                                 .setFlags(DkMemBlockFlags_GpuCached | DkMemBlockFlags_Image)
                                 .create();
 
+    nxdb::log("fontImage");
     dk::Image fontImage;
     fontImage.initialize(layout, bd->fontImageMemBlock, 0);
 
+    nxdb::log("init font descriptors");
     // init font descriptors
     descCpuAddr->image.initialize(fontImage);
     descCpuAddr->sampler.initialize(
@@ -289,8 +298,11 @@ static void InitDeko3dFontTexture(ImGui_ImplDeko3d_Data* bd)
         dk::ImageView { fontImage },
         { 0, 0, 0, u32(width), u32(height), 1 });
 
+    nxdb::log("f submitCommands");
     bd->queue.submitCommands(cmdbuf.finishList());
+    nxdb::log("f waitIdle");
     bd->queue.waitIdle();
+    nxdb::log("f waitIdle done");
 }
 
 static void InitDeko3dData(ImGui_ImplDeko3d_Data* bd)
@@ -298,18 +310,23 @@ static void InitDeko3dData(ImGui_ImplDeko3d_Data* bd)
     bd->device = dk::DeviceMaker().create();
     bd->queue = dk::QueueMaker(bd->device).setFlags(DkQueueFlags_Graphics).create();
 
+    nxdb::log("InitDeko3Shaders");
     InitDeko3Shaders(bd);
 
+    nxdb::log("InitDeko3dSwapchain");
     InitDeko3dSwapchain(bd);
 
+    nxdb::log("InitDeko3dFontTexture");
     InitDeko3dFontTexture(bd);
 
+    nxdb::log("CreateUBO");
     // Create a memory block for UBO
     bd->uboMemBlock = dk::MemBlockMaker(bd->device,
         align(align(sizeof(VertUBO), DK_UNIFORM_BUF_ALIGNMENT),
             DK_MEMBLOCK_ALIGNMENT))
                           .setFlags(DkMemBlockFlags_CpuUncached | DkMemBlockFlags_GpuCached)
                           .create();
+    nxdb::log("InitDeko3dData done");
 }
 
 void ImGui_ImplDeko3d_Init()
@@ -329,9 +346,11 @@ void ImGui_ImplDeko3d_Init()
     ImGui_ImplDeko3d_Data* bd = new ImGui_ImplDeko3d_Data();
     io.BackendRendererUserData = (void*)bd;
 
+    nxdb::log("InitDeko3dData");
     // init all resources of deko3d
     InitDeko3dData(bd);
 
+    nxdb::log("padConfigureInput");
     // init the gamepad
     padConfigureInput(1, HidNpadStyleSet_NpadStandard);
     padInitializeDefault(&bd->pad);

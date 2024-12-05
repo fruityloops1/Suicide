@@ -27,6 +27,8 @@ target_compile_definitions(${TARGET} PUBLIC
   IMGUI_DISABLE_OBSOLETE_KEYIO
   IMGUI_DISABLE_OBSOLETE_FUNCTIONS
   IMGUI_USER_CONFIG="nxdb_imgui_config.h"
+  LOGGING
+  DEBUG
   )
 
 target_link_libraries(${TARGET} PUBLIC

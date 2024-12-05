@@ -1,4 +1,5 @@
 #include "imgui_impl_deko3d.h"
+#include "types.h"
 
 #include <deko3d.hpp>
 #include <stdio.h>
@@ -6,6 +7,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
+#include <switch/display/native_window.h>
+#include <switch/services/vi.h>
 
 #define FB_NUM 2
 #define FB_WIDTH 1280
@@ -97,6 +100,20 @@ static void InitDeko3Shaders(ImGui_ImplDeko3d_Data* bd)
     IM_ASSERT(codeMemOffset + DK_SHADER_CODE_UNUSABLE_SIZE <= CODEMEMSIZE);
 }
 
+extern "C" u64 __nx_vi_layer_id;
+
+static Result viAddToLayerStack(ViLayer* layer, ViLayerStack stack)
+{
+    const struct {
+        u32 stack;
+        u64 layerId;
+    } in = { stack, layer->layer_id };
+
+    return serviceDispatchIn(viGetSession_IManagerDisplayService(), 6000, in);
+}
+
+static NWindow window;
+
 static void InitDeko3dSwapchain(ImGui_ImplDeko3d_Data* bd)
 {
     DkDevice device = bd->device;
@@ -140,8 +157,31 @@ static void InitDeko3dSwapchain(ImGui_ImplDeko3d_Data* bd)
         bd->framebuffers[i].initialize(fbLayout, bd->fbMemBlock, i * fbSize);
     }
 
+    ViDisplay display;
+    R_ABORT_UNLESS(viOpenDefaultDisplay(&display));
+    R_ABORT_UNLESS(viCreateManagedLayer(&display, static_cast<ViLayerFlags>(0), 0, &__nx_vi_layer_id));
+    ViLayer layer;
+    R_ABORT_UNLESS(viCreateLayer(&display, &layer));
+    R_ABORT_UNLESS(viSetLayerScalingMode(&layer, ViScalingMode_FitToLayer));
+
+    if (s32 layerZ = 0; R_SUCCEEDED(viGetZOrderCountMax(&display, &layerZ)) && layerZ > 0)
+        R_ABORT_UNLESS(viSetLayerZ(&layer, layerZ));
+
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Default));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Screenshot));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Recording));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Arbitrary));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_LastFrame));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Null));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_ApplicationForDebug));
+    R_ABORT_UNLESS(viAddToLayerStack(&layer, ViLayerStack_Lcd));
+
+    R_ABORT_UNLESS(viSetLayerSize(&layer, 1280, 720));
+    R_ABORT_UNLESS(viSetLayerPosition(&layer, 0, 0));
+    R_ABORT_UNLESS(nwindowCreateFromLayer(&window, &layer));
+
     // create a swapchain
-    bd->swapchain = dk::SwapchainMaker(device, nwindowGetDefault(), swapchainImages).create();
+    bd->swapchain = dk::SwapchainMaker(device, &window, swapchainImages).create();
 
     // Create command buffer and memory block
     for (int i = 0; i < FB_NUM; ++i) {
@@ -155,7 +195,7 @@ static void InitDeko3dSwapchain(ImGui_ImplDeko3d_Data* bd)
 
 static void ImGui_LoadSwitchFonts(ImGuiIO& io)
 {
-    PlFontData standard, extended, chinese, korean;
+    /*PlFontData standard, extended, chinese, korean;
     ImWchar extended_range[] = { 0xe000, 0xe152 };
     bool ok = R_SUCCEEDED(
                   plGetSharedFontByType(&standard, PlSharedFontType_Standard))
@@ -164,15 +204,15 @@ static void ImGui_LoadSwitchFonts(ImGuiIO& io)
         && R_SUCCEEDED(plGetSharedFontByType(
             &chinese, PlSharedFontType_ChineseSimplified))
         && R_SUCCEEDED(plGetSharedFontByType(&korean, PlSharedFontType_KO));
-    IM_ASSERT(ok);
+    IM_ASSERT(ok);Ü/
 
-    ImFontConfig font_cfg;
+    /*ImFontConfig font_cfg;
     font_cfg.FontDataOwnedByAtlas = false;
     io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 18.0f,
         &font_cfg, io.Fonts->GetGlyphRangesDefault());
     font_cfg.MergeMode = true;
     io.Fonts->AddFontFromMemoryTTF(extended.address, extended.size, 18.0f,
-        &font_cfg, extended_range);
+        &font_cfg, extended_range);*/
     // NOTE: uncomment to enable Chinese/Korean support but with slow startup time
     /*
     io.Fonts->AddFontFromMemoryTTF(

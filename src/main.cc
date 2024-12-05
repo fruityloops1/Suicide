@@ -16,8 +16,8 @@
 #include "util.h"
 
 extern "C" u32 __nx_nv_service_type = NvServiceType_Factory;
-extern "C" u32 __nx_nv_transfermem_size = 0x10000;
-extern "C" size_t __nx_heap_size = 0x200000;
+extern "C" u32 __nx_nv_transfermem_size = 0x300000;
+extern "C" size_t __nx_heap_size = 0x200000 * 8;
 
 extern "C" void __appInit(void)
 {
